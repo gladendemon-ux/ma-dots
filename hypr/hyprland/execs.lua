@@ -1,0 +1,16 @@
+hl.on("hyprland.start", function ()
+
+    hl.exec_cmd("mako")
+
+    hl.exec_cmd("hypridle")
+    hl.exec_cmd("systemctl --user start hyprpolkitagent")
+    hl.exec_cmd("./gay.out")
+    hl.exec_cmd("./500")
+
+
+    hl.exec_cmd("hyprpaper")
+    hl.exec_cmd("eww daemon && eww open clock")
+
+    -- Cursor
+    hl.exec_cmd("hyprctl setcursor Bibata-Modern-Classic 24")
+end)
