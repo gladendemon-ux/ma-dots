@@ -1,0 +1,88 @@
+(defpoll title :interval "1s" `playerctl metadata --format '{{title}}'`)
+(defpoll artist :interval "1s" `playerctl metadata --format '{{artist}}'`)
+
+(deflisten cava :initial "" "bash $HOME/.config/eww/cava.sh")
+
+
+(defpoll ram-usage :interval "2s"
+  `free -h | awk '/^Mem:/ {print $3 "/" $2}'`)
+(deflisten ram-percent :initial "0"
+  `while true; do free | awk '/^Mem:/ {print int($3/$2 * 100)}'; sleep 2; done`)
+
+(defpoll song_length_s   :interval "2s"
+"playerctl metadata mpris:length | awk '{print $1 / 1000000}' || echo 1")
+
+(defpoll cover   :interval "1s"
+"bash ~/getsongcover.sh")
+
+(defpoll song_position_s    :interval "1s" "playerctl position || echo 0")
+
+(defpoll formatted_position :interval "1s" "playerctl position -f '{{duration(position)}}' || echo '0:00'")
+;;uptime vars
+(defpoll UPTIME :interval "5s" `uptime -p | sed 's/up//g'`)
+
+(defpoll time :interval "1s" "date +%H:%M")
+(defpoll date :interval "1s" "date +'%A, %d %B %Y'")
+
+(defwidget clock []
+  (box :orientation "vertical" :halign "center" :class "clock-box"
+    (label :text time :class "clock-time")
+    (label :text date :class "clock-date")))
+
+(defwidget ram-widget []
+  (box :class "widget-box"
+       :orientation "h"
+       :spacing 0
+    (overlay
+      (progress :value ram-percent
+                :class "ram-progress"
+                :orientation "h")
+      (box :orientation "h"
+           :spacing 5
+           :class "ram-text-overlay"
+        (label :text "RAM"
+               :class "ram-label")
+        (label :text ram-usage
+               :class "ram-usage")))))
+
+
+(defwidget music-widget []
+    (box :class "music-widget" :orientation "h" :space-evenly false
+    (box :class "cover" :halign "start" :valign "center"
+    (image :path cover :image-width 160 :class "cover-img")
+      )
+    (box :orientation "horizontal" :halign "end" :class "song-info"
+    (label :text title :class "song-title" :valign "center" :halign "end" :wrap true)
+    (label :text "" :valign "center")
+    (label :text artist :class "song-artist" :valign "center" :wrap true)
+      )))
+
+;;--- Window Definition ---
+
+(defwindow music-widget
+  :monitor 0
+  :geometry (geometry :x "50%" :y "28.8%" :width "20%" :height "10%" :anchor "bottom center")
+  :stacking "bg"
+  (music-widget)
+)
+
+
+(defwindow ram
+  :namespace "eww-blur"
+  :monitor 0
+  :geometry (geometry :y "58%" :width "20%" :height "10%" :anchor "bottom center") 
+  :stacking "bg"
+  (ram-widget))
+
+
+(defwindow clock
+  :namespace "eww-blur"
+  :monitor 0
+  :geometry (geometry :x "50%" :y "50%" :width "20%" :height "10%" :anchor "center")
+  :stacking "bg"
+  :visible true
+  :exclusive true  
+  (clock))
+
+
+

@@ -1,0 +1,73 @@
+//@font-face {
+//  font-family: "Sekuya Regular";
+//  src: url("assets/fonts/Sekuya-Regular.ttf");
+//  font-style: normal;
+//  font-weight: 400;
+//  font-display: swap;
+//}
+$main-color: #303F6E;
+$secondary-color: #8E9DCD;
+$text-color: #CDD4E9;
+$text-sec-color: #FFC561;
+//$author-font
+
+
+
+window {
+	background: $main-color;
+	border: 2px solid $secondary-color;
+}
+
+.clock-box {
+  padding: 20px 40px;
+}
+
+.clock-time {
+  font-size: 90px;
+  margin-bottom: -25px;
+  color: $text-color;
+}
+
+.clock-date {
+  font-size: 18px;
+  color: $text-sec-color;
+  font-family: "JetBrainsMono NFM", sans-serif;
+  margin-bottom: -25px;
+}
+
+.ram-label {
+  font-size: 18px;
+  color: $text-color;
+}
+
+.ram-usage {
+  color: $text-sec-color;
+  font-size: 25px;
+}
+
+.music-widget {
+  padding: 10px 10px;
+}
+
+.cover {
+  border: 1px solid $secondary-color;
+  padding: 2px 2px;
+}
+
+.cover-img {
+  border-radius: 10%;
+}
+
+
+.song-title {
+  margin-left: 10px;
+  font-size: 18px;
+  color: $text-color
+}
+
+.song-artist {
+  margin-right: 10px;
+  font-weight: bold;
+  font-size: 20px;
+  color: $text-sec-color;
+}
