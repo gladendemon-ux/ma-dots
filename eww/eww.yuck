@@ -1,8 +1,7 @@
 (defpoll title :interval "1s" `playerctl metadata --format '{{title}}'`)
 (defpoll artist :interval "1s" `playerctl metadata --format '{{artist}}'`)
 
-(deflisten cava :initial "" "bash $HOME/.config/eww/cava.sh")
-
+(deflisten cava :initial "" "bash $HOME/cava.sh")
 
 (defpoll ram-usage :interval "2s"
   `free -h | awk '/^Mem:/ {print $3 "/" $2}'`)
@@ -61,8 +60,9 @@
 
 (defwindow music-widget
   :monitor 0
-  :geometry (geometry :x "50%" :y "28.8%" :width "20%" :height "10%" :anchor "bottom center")
-  :stacking "bg"
+  :geometry (geometry :x "0%" :y "20%" :width "20%" :height "10%" :anchor "top left")
+  :stacking "overlay"
+  :exclusive false
   (music-widget)
 )
 
@@ -70,18 +70,18 @@
 (defwindow ram
   :namespace "eww-blur"
   :monitor 0
-  :geometry (geometry :y "58%" :width "20%" :height "10%" :anchor "bottom center") 
-  :stacking "bg"
+  :geometry (geometry :y "40%" :width "20%" :height "10%" :anchor "top left") 
+  :stacking "overlay"
   (ram-widget))
 
 
 (defwindow clock
   :namespace "eww-blur"
   :monitor 0
-  :geometry (geometry :x "50%" :y "50%" :width "20%" :height "10%" :anchor "center")
-  :stacking "bg"
+  :geometry (geometry :x "0%" :y "0%" :width "20%" :height "10%" :anchor "top left")
+  :stacking "overlay"
   :visible true
-  :exclusive true  
+  :exclusive false  
   (clock))
 
 

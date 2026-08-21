@@ -1,0 +1,25 @@
+{
+    "label" : "lock",
+    "action" : "hyprlock",
+    "text" : "",
+    "keybind" : "l"
+}
+{
+    "label" : "logout",
+    "action" : "command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'",
+    "text" : "",
+    "keybind" : "e"
+}
+{
+    "label" : "hibernate",
+    "action" : "systemctl suspend",
+    "text" : "",
+    "keybind" : "h"
+}
+
+{
+    "label" : "reboot",
+    "action" : "systemctl reboot",
+    "text" : "",
+    "keybind" : "r"
+}

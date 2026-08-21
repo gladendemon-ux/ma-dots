@@ -72,7 +72,7 @@ hl.config({
         -- 2 = circle, higher = squircle, 4 = very obvious squircle
         -- Fuck clearly visible squircles. 100% Apple brainrot.
         rounding_power = 2.5,
-        rounding = 11,
+        rounding = 5,
 
         blur = {
             enabled = true,
@@ -100,7 +100,7 @@ hl.config({
 
         },
         -- Dim
-        dim_inactive = true,
+        dim_inactive = false,
         dim_strength = 0.2,
         dim_special = 0.2
     },
@@ -257,7 +257,9 @@ hl.animation({
 
 hl.config({
     input = {
-        kb_layout = "us",
+        kb_layout = "us, bg",
+	kb_variant = ",phonetic",
+	kb_options = "grp:alt_shift_toggle",
         numlock_by_default = true,
         repeat_delay = 250,
         repeat_rate = 35,

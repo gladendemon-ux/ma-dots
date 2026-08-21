@@ -1,0 +1,430 @@
+*autopairs-troubleshooting*   Trouble-shooting document for |autopairs|
+*AutoPairsTroubleshooting* *AutoPairsTrouble*
+
+==============================================================================
+Table of help documents~
+
+    |AutoPairs.txt|
+    |AutoPairsCompatibility|
+    |AutoPairsTroubleshooting| (you are here)
+    |AutoPairsHowTo|
+
+==============================================================================
+Table of Contents                           *autopairs-troubleshooting-contents*
+
+    1. General troubleshooting .............. |autopairs-troubleshooting|
+    2. Conflicting keybinds ................. |autopairs-conflicts|
+        1. European letters ................. |autopairs-european-letters|
+        2. Other plugins .................... |autopairs-conflict-plugins|
+    3. Uninstalling ......................... |autopairs-uninstalling|
+        1. Vim views ........................ |autopairs-uninstall-views|
+    4. Rust ................................. |autopairs-rust|
+    5. Undefined variables .................. |autopairs-undefined|
+    6. Enter to insert auto-complete ........ |autopairs-autocomplete|
+    7. Test failures (and related errors) ... |autopairs-test-failures|
+        1. Autocmd and syntax errors ........ |autopairs-typescript-errors|
+    8. Weird auto-pairs stuff on <CR> ....... |autopairs-bad-cr|
+    9. Config changes not taking effect ..... |autopairs-config-changes-broken|
+
+==============================================================================
+1. General troubleshooting                           *autopairs-troubleshooting-general*
+
+This plugin remaps, among others, `([{'"}]) <BS> <CR>` . BS and CR can be
+controlled by options in the plugin, but the rest are mapped based on what
+pairs you're using. See |g:AutoPairs|
+
+If auto pairs doesn't work, use |:verbose| |:imap| to check if the map is correct.
+
+For i.e. `:verbose imap (`, the correct map is: >
+
+    <C-R>=autopairs#AutoPairsInsert("(")<CR>
+
+How do I insert a character registered as a part of a pair without~
+                        triggering the plugin?~
+
+There are four ways to do this:
+
+    1. Use `Ctrl-V )` to insert an open or close character (where ")" is any
+        open or close character) without trigger the plugin.
+
+    2. Use `Alt-P` or `Ctrl-P Ctrl-T` to turn off the plugin. See
+        |g:AutoPairsShortcutToggle|
+
+    3. Use `DEL`, `<C-O>x`, or other "normal" means of deletion to delete the
+        character inserted by the plugin.
+
+    4. Use <C-p><C-e> (|g:AutoPairsShortcutIgnore|) to ignore a single
+        insertion. The next pair character you insert will be inserted
+        literally, and auto-pairs will immediately be re-enabled.
+
+        This is effectively equivalewnt to the toggle option, but with fewer
+        steps.
+
+==============================================================================
+2. Conflicting keybinds                                    *autopairs-conflicts*
+
+There may be other reasons and solutions for conflicting keybinds than what's
+laid out here; this aims to be a general overview of a few known conflicts.
+
+------------------------------------------------------------------------------
+2.1. European letters                               *autopairs-european-letters*
+
+Note: We now have |g:AutoPairsCompatibleMaps|. By setting it to 0, all
+mappings will use a control-based alternative instead of the meta variants
+inherited from jiangmiao. This will be the default behavior in the future.
+
+Auto-pairs has several mappings that uses the alt key (meta) in such a way
+that it conflicts various European letters, including å.
+This one specifically originates from Alt-E, which is used by
+|g:AutoPairsShortcutFastWrap| when using compatible mode.
+
+While this is a known conflict, there could always be other conflicts.
+To see if there's a conflict with a key on your keyboard,
+`verbose imap <insert letter>` and see what it says.
+See: https://vi.stackexchange.com/q/20995/21251. You should be
+able to backtrace the keybind from there, and using the options discussed in
+|autopairs-conflicts|, remap it to something else.
+
+From issues on the original autopairs repo, however, it's abundantly clear
+that this isn't specific to Scandinavian languages: a few of the meta keybinds
+directly conflict with various letters for other European languages. Normally,
+this wouldn't be a problem, but in insert mode mappings? They, to say the
+least, introduces challenges.
+
+Again, using |g:AutoPairsCompatibleMaps| lets you avoid issues where a meta
+combination results in a letter you need. While I highly recommend using
+|g:AutoPairsCompatibleMaps|, you can still manually remap the problematic
+keys.
+
+------------------------------------------------------------------------------
+2.2. Other plugins                                  *autopairs-conflict-plugins*
+
+There's relatively little to do about conflicts with other plugins.
+
+This plugin tries its best to make sure it doesn't override other mappings, by
+"importing" other maps, but these may still occur. Auto-pairs' mappings are
+done on a per-buffer basis, so it can be compatible with certain other
+plugins, but it can also not.
+
+If you find yourself in a situation where you're unable to make sure enter does
+what you want, you can always write a function and map <cr> to that. However,
+thanks to plugins being weird, you may have to disable bits that remap <cr> for
+this to work at all.
+
+Pull requests/issues~
+If you read any of this and you can tell me I'm wrong, and offer a solution or
+a start, either as a pull request or as an issue, please do let me know. I'm
+more than willing to hear alternative solutions to this problem that cause
+less inconvenience for the users.
+Related: |autopairs-contributing|
+
+==============================================================================
+3. Uninstalling                                         *autopairs-uninstalling*
+
+In most cases, uninstalkling is trivial, and doesn't need any other steps than
+being removed from your plugin manager, and cleaned from your system. (Or
+similar steps if you're not using a plugin manager).
+
+However, there are certain exceptions. If you're having a hard time
+uninstalling, this section may explain why.
+
+------------------------------------------------------------------------------
+3.1. Views                                           *autopairs-uninstall-views*
+
+If you use |:mkview| to save folds or other data, you may have trouble
+uninstalling. See:
+* https://github.com/jiangmiao/auto-pairs/issues/192
+* https://github.com/LunarWatcher/auto-pairs/issues/33
+
+Views, with the default settings for |viewoptions|, saves maps for buffers.
+Since auto-pairs maps several central keys, this becomes painfully obvious the
+second a pair character (or even just space, enter, or backspace) is pressed
+after uninstalling.
+
+There's no way for the plugin to "ask" for certain keybinds to be excluded
+from saving, which means there's only hackish workarounds.
+
+The general idea is, you need to clean out your view files. The "easiest"
+option, if you don't mind losing your data, is deleting |'viewdir'|.
+(`:echo &viewdir` to see which directory to delete). Alternatively, you can
+manually edit the files, or apply a bit of `sed`/`grep`-magic to get rid of
+the offending maps.
+
+If you're looking to just save folds, you can alternatively
+`set viewoptions-=options`, which excludes mappings from being saved.
+Unfortunately, this won't help you load the view files - they're still going
+to be in a broken state. However, it'll prevent the same type of problems from
+happening with this or other plugins, as well as from happening on view files
+updated after the option is set.
+
+TL;DR:~
+Won't fix, but remove the folder defined by |'viewdir'|, or remove the
+auto-pairs maps from the files in said directory. `set viewoptions-=options`
+helps prevent this problem from occurring, but won't fix any existing view
+files.
+
+==============================================================================
+4. Rust                                          *autopairs-rust* *rust-autopairs*
+
+If you're using the Rust plugin (https://github.com/rust-lang/rust.vim), you
+may have noticed that your custom pairs don't autocomplete. This isn't
+auto-pairs fault.
+
+The Rust plugin overrides auto-pairs entirely, which also means your custom
+pairs get nuked.
+
+To keep your pairs, you have to: >
+    let g:rust_keep_autopairs_default = 1
+<
+
+See https://github.com/rust-lang/rust.vim/blob/87c745d8d506fc1eecc1d81df15d5bde1658a2fc/doc/rust.txt#L277
+
+The Rust plugin sets these pairs: >
+    let b:AutoPairs = {'(':')', '[':']', '{':'}','"':'"', '`':'`'}
+<
+
+All of which are already enabled by default. You're not losing any pairs by
+setting the option, but by letting it be 0, you lose any other defined pairs
+-- including your custom pairs.
+
+==============================================================================
+5. Undefined variables (that clearly exist)                *autopairs-undefined*
+
+With certain configurations, you may run into undefined variables.
+
+Admittedly, this is rare, and primarily applies to places where you'd like to
+append to an existing default, rather than overriding it in its entirety.
+Remember; `let g:AutoPairs<Something> = "example"` is fine, but
+`let g:AutoPairs<Something> += "something else"` is bad if
+`g:AutoPairs<Something>` hasn't already been defined.
+
+AutoPairs do define these on load, but they're not loaded immediately. The
+reason this happens is load order; by default, and unfixably, auto-pairs isn't
+invoked until after the vimrc is loaded.
+
+However, you can cheat the system by calling any autoload function. Which you
+call depends on what variable you're trying to initialise from a default.
+
+For example, if you'd like to add a pair, use |autopairs#AutoPairsDefine|.
+
+If no such function exists, you can explicitly call
+|autopairs#Variables#InitVariables|. However, this is only needed if you don't
+call any other autopairs autoload functions. If you have
+|autopairs#AutoPairsDefine| invoked in your config, you can define whatever
+variable you need _after_ that function call without any problems. Calling
+|autopairs#Variables#InitVariables()| explicitly is more or less a symbolic
+function call equivalent to an empty function, as the function is called when
+the primary autoload script is loaded anyway.
+
+TL;DR: define your additions to the defaults after calling an autoload
+function. This is only necessary when you make changes to an existing variable
+(such as using +=), not when you define it yourself (|=|). Use specific
+methods if available and applicable, |autopairs#Variables#InitVariables|
+otherwise
+==============================================================================
+6. Enter to insert auto-complete                        *autopairs-autocomplete*
+
+See also: https://github.com/LunarWatcher/auto-pairs/issues/66
+
+There's no known reason why auto-pairs misbehaves when <CR> is remapped to
+allow for `<CR>` to pick an autocomplete option. See the linked issue
+for debug instructions that would help me narrow this down if you're currently
+running into this issue.
+
+Note that there previously was an incorrect explanation for the error both
+in this section of the help document, and the issue. That explanation was
+based on a blatant misunderstanding. See also |autopairs-bad-cr| for a general
+problem description, as well as roughly the same troubleshooting steps
+
+==============================================================================
+7. Test failures (and related errors)                  *autopairs-test-failures*
+
+------------------------------------------------------------------------------
+7.1. TypeScript errors                             *autopairs-typescript-errors*
+
+Type: Vim bug
+Status: Fixed in later versions of Vim. Test fails can be ignored
+
+I've done minimal research into this problem, so not sure whether this is
+exclusively a problem with 
+
+The "Contextual balancing should cooperate with everything should work in
+typescript" test fails in at least Vim 9.0.263, for an unknown reason.
+
+This is a bug in Vim itself, and can only be solved by updating Vim. 9.0.482
+is a known good patch.
+
+Example of an affected error log: >
+    not ok 49 - Contextual balancing should cooperate with everything should work in typescript
+    # function 188() abort dict  Line:1  [ Absolute Line: 34 ]  (/tmp/vwcnP9s/12)
+    # function BufNewFile Autocommands for "*.ts"()  This function is already deleted.
+    # function FileType Autocommands for "*"()  This function is already deleted.
+    # function Syntax Autocommands for "*"()  This function is already deleted.
+    # function function <SNR>21_SynSet()  This function is already deleted.
+    # function script()  This function is already deleted.
+    # 
+    # Vim(source):E484: Can't open file /usr/local/share/vim/vim90/syntax/shared/typescriptcommon.vim
+<
+
+Tests failing with this error can safely be ignored
+
+==============================================================================
+8. Weird output on <CR>                                       *autopairs-bad-cr*
+
+Before troubleshooting yourself, take a look at |autopairs-incompatible-cr|
+for a list of known problem plugins, and compare it to your installed plugins.
+The next paragraph contains a description of the general reason why this
+happens, and it's worth a read.
+
+These issues are a royal pain in the ass, and there isn't one guaranteed root
+cause. Certain keys in insert mode are highly prone to mapping conflicts,
+especially when obscure use is involved. There's many examples of this, but
+the TL;DR: is: if auto-pairs maps `<CR>` first, it can be overwritten by a
+plugin that doesn't respect auto-pairs execution context, consequently
+printing the map value as a string literal.
+
+The overwhelming majority of conflicts happen as a result of a bad
+compatibility system, where the rest of the map is assumed to be a string
+literal, or otherwise executable with |:normal|, |:exec|, |feedkeys()|, or similar.
+The problem is due to auto-pairs' use of |<SNR>|, which many plugins fail to
+account for in their mapping compatibility systems, some times by error and
+some times by design, resulting in weird output.
+
+I've experienced first-hand how annoying it is to try to debug this, and I've
+erroneously blamed the wrong plugins. There's one bug report about auto-pairs
+that I still don't understand, because I was wrong in believing it was
+coc.nvim's fault.
+
+The correct way to diagnose this is to first check `:verbose imap <cr>`
+If this yields anything other than auto-pairs, you've found your root cause.
+Consider opening an issue if the plugin isn't already present in
+|autopairs-incompatible-cr| so it can be tracked. Also, consider opening an
+issue in the plugin you've found's repo (assuming there isn't one already) to
+let them know in case it's something they can fix.
+
+If it only yields auto-pairs, there should be two `<SNR>`s. Here's one
+example: >
+    i  <CR>        &@<SNR>129_AutoPairsOldCRWrapper73<SNR>129_AutoPairsReturn
+        Last set from ~\vimfiles\plugged\auto-pairs\autoload\autopairs\Keybinds.vim line 245
+<
+Again, if you see a reference to any other plugin than auto-pairs, you've
+already found the culprit. 
+
+Your output will vary in terms of the exact numbers.
+`<SNR>129_AutoPairsReturn` does not have to be checked. This is a short code
+for auto-pairs' own function. The interesting bit is
+`<SNR>129_AutoPairsOldCRWrapper73`. Again, adjusting this command for
+different numbers, run: >
+    imap <SNR>129_AutoPairsOldCRWrapper73
+<
+You generally don't get tab auto-completion for this particular function for
+whatever reason, so pay attention to what you write.
+
+Again, if the plugin isn't present in |autopairs-incompatible-cr|, please open
+an issue to let me know. If auto-pairs eats the map, it's not always easy to
+tell which plugin is at fault. Could be auto-pairs, could be the other plugin,
+could be both.
+
+TL;DR:
+1. Run imap <CR>
+2. If the output mentions a different plugin in the buffer map, jump to step 4
+3. If the output mentions auto-pairs, run >
+    imap <SNR>1234_AutoPairsOldCRWrapper1234
+<
+   The exact numbers will vary. See the output you got from imap <CR>.
+   If this is undefined, jump to step 6
+4. Check |autopairs-incompatible-cr| for the plugin. If it's there, go to
+mitigations.
+5. Bug reports (ensure there aren't bug reports for the applicable plugins
+    already):
+    * Open one in the auto-pairs repo regardless of whether you did step 2 or
+      3. I'm trying to map these for commonalities, which requires me to be
+      aware of plugins.
+    * If you didn't do step 3, open a bug report in the other plugin's repo as
+      well. There's no guarantee this will ever result in a fix, but it's a
+      good pointer to identify whether or not this is a bug with the other
+      plugin.
+    * If you're in doubt about which plugin is to blame, open an issue in
+      auto-pairs' repo, and I'll try to help figure it out
+
+Mitigations~
+
+There are ways to deal with this in the short term, but there's never really a
+good way to do this.
+
+The best option is if there's a way to fix it in code, in which case it'll go
+away and be all good.
+
+If there isn't, or you need a fix urgently, you have a few choices:
+1. Disable auto-pairs' `<CR>` mapping
+2. Disable the `<CR>` mapping of the other plugin
+3. If disabling isn't an option, or you for some reason figure that this is
+the last straw for the other plugin, you can uninstall the other plugin plugin.
+4. Uninstall auto-pairs
+5. Create your own function for mapping `<CR>`. Note that this may be easier
+    said than done in some cases. Make sure to disable all plugin mapping of
+    `<CR>`, as buffer maps take precedence over global maps.
+
+    There's no easy way to guide you through this, as the exact function
+    depends on what plugins you have, the order you'd like to execute them in,
+    the conditions you have available, the output types, etc.
+
+    This also requires you to be reasonably familiar with vimscript, for
+    obvious reasons.
+
+    See also |autopairs-autocomplete-cr|
+
+==============================================================================
+9. Config changes not taking effect            *autopairs-config-changes-broken*
+
+TL;DR:~
+
+Correct: >
+    let g:AutoPairsPrefix = '<some keybind here>'
+    let g:AutoPairs = autopairs#AutoPairsDefine({ ... some definitions here })
+<
+Incorrect: >
+    let g:AutoPairs = autopairs#AutoPairsDefine({ ... some definitions here })
+    let g:AutoPairsPrefix = '<some keybind here>'
+<
+This applies to any of auto-pairs' functions, generally identified by the
+`autopairs#` prefix.
+
+Long version~
+If you're making changes to auto-pairs' config variables and seeing it not
+take effect, you're probably running into an initialisation order problem.
+This particularly applies to |g:AutoPairsPrefix|, but may exist in other
+places as well. To avoid running into these problems, it's recommended to
+initialise variables before calling any of auto-pairs' functions.
+
+If any functions are called before variables are declared, this results in
+certain internal variables being initialised in a way that makes it difficult
+to change afterwards. Taking |g:AutoPairsPrefix| as an example, consider: >
+    let g:AutoPairs = autopairs#AutoPairsDefine({ ... some definitions here })
+    let g:AutoPairsPrefix = '<some keybind here>'
+<
+
+In this case, all the defaults are initialised after the g:AutoPairsDefine
+call. While this usually isn't a problem, all the keybind initialisations
+depend on the value of |g:AutoPairsPrefix|. Because it isn't defined prior to
+the function call, the function defines it as the default value. When
+|g:AutoPairsPrefix| then is defined after the function call, the variable
+initialisation function is not called again (and even if it was, it would
+not change anything, as the dependent variables are assumed to be initialised
+by the user, and won't be reinitialised).
+
+Simply put, if you're seeing this problem, it's caused by variables depending
+on other variables during initialisation, and the value of the variable is
+copied at the time of initialisation.
+
+This means that, as the TL;DR: stated, you need to call `autopairs#` functions
+after initialising the variables you're interested in, and not before. That
+way, when the variable initialisation happens, dependent variables are
+initialised correctly.
+
+See also~
+* https://github.com/LunarWatcher/auto-pairs/issues/84
+  The issue also contains a practical demonstration of this happening in
+  practice.
+
+vim:ft=help

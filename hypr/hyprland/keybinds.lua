@@ -1,6 +1,6 @@
 local mainMod = "SUPER"
 local file = "nautilus"
-local browser = "flatpak run app.zen_browser.zen"
+local browser = "firefox"
 local menu = "wofi --show drun"
 local terminal = "kitty"
 local gameeng = "/home/bnn/custom_apps/godot.sh"
@@ -15,7 +15,7 @@ hl.bind("SUPER + E" ,hl.dsp.exec_cmd(file))
 hl.bind("SUPER + D" ,hl.dsp.exec_cmd("flatpak run org.blender.Blender"))
 hl.bind("SUPER + G" ,hl.dsp.exec_cmd(gameeng))
 hl.bind("SUPER + P" ,hl.dsp.exec_cmd("hyprpicker"))
-hl.bind("SUPER + X" ,hl.dsp.exec_cmd("wlogout"))
+hl.bind("SUPER + X" ,hl.dsp.exec_cmd("wlogout -b 2"))
 
 
 hl.bind("SUPER + L" ,hl.dsp.exec_cmd("hyprlock"))
@@ -32,8 +32,8 @@ hl.bind("F9", hl.dsp.exec_cmd("playerctl next"),       { locked = true })
 
 
 --Audio
-hl.bind("SUPER + F12" ,hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 5%+"))
-hl.bind("SUPER + F11" ,hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 5%-"))
+hl.bind("SUPER + F12" ,hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 2%+"))
+hl.bind("SUPER + F11" ,hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 2%-"))
 
 
 hl.bind("F10" ,hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
@@ -72,10 +72,10 @@ end
 hl.bind("ALT + grave", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind("ALT + TAB" ,hl.dsp.focus({ workspace = "e+1" }))
 
+hl.bind("F2", hl.dsp.exec_cmd("hyprctl reload"))
 
 
 hl.bind("F1", hl.dsp.exec_cmd("bash opacityZero.sh"))
-hl.bind("F1", hl.dsp.exec_cmd("bash exitPeek.sh"), { release = true })
-hl.define_submap("peek", function()
-hl.bind("catchall", hl.dsp.exec_cmd("bash exit.sh"))
-end)
+hl.bind("F1", hl.dsp.exec_cmd("bash exitPeek.sh"), {release = true})
+hl.bind("F2", hl.dsp.exec_cmd("eww close-all"), {release = true})
+
