@@ -54,8 +54,7 @@ hl.config({
         border_size = 2,
 
         col = {
-            active_border = "rgba(0DB7D455)",
-            inactive_border = "rgba(31313600)"
+            active_border = "#D08780",
         },
         resize_on_border = false,
 
@@ -81,12 +80,12 @@ hl.config({
             new_optimizations = true,
             size = 10,
             passes = 3,
-            brightness = 1,
-            noise = 0.05,
-            contrast = 0.89,
-            vibrancy = 0.5,
-            vibrancy_darkness = 0.5,
-            popups = false,
+            brightness = 0.7,
+            noise = 0.005,
+            contrast = 1,
+            vibrancy = 0,
+            vibrancy_darkness = 0,
+            popups = true,
             popups_ignorealpha = 0.6,
             input_methods = true,
             input_methods_ignorealpha = 0.8
@@ -202,14 +201,14 @@ hl.animation({
     enabled = true,
     speed = 2.7,
     bezier = "emphasizedDecel",
-    style = "slide"
+    style = "popin"
 })
 hl.animation({
     leaf = "layersOut",
     enabled = true,
     speed = 2.4,
     bezier = "menu_accel",
-    style = "slide"
+    style = "popin"
 })
 -- fade
 hl.animation({

@@ -78,7 +78,7 @@
 (defwindow clock
   :namespace "eww-blur"
   :monitor 0
-  :geometry (geometry :x "0%" :y "0%" :width "20%" :height "10%" :anchor "top left")
+  :geometry (geometry :x "0%" :y "2%" :width "20%" :height "10%" :anchor "top center")
   :stacking "overlay"
   :visible true
   :exclusive false  

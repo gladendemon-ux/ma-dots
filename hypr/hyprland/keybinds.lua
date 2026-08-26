@@ -28,7 +28,34 @@ hl.bind("F7", hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 hl.bind("F9", hl.dsp.exec_cmd("playerctl next"),       { locked = true })
 
 
+--cycle layouts
+hl.bind("SUPER + tab", function ()
+    local layouts     = { "scrolling", "dwindle", "master", "monocle" }
+    local workspace   = hl.get_active_workspace()
+	if hl.get_active_special_workspace() then
+		workspace = hl.get_active_special_workspace()
+	end
 
+    local next_layout = "dwindle"
+
+    if not workspace then
+        return
+    end
+
+    for i = 1, #layouts do
+        if layouts[i] == workspace.tiled_layout then
+            local next_layout_idx = (i % #layouts) + 1
+            next_layout = layouts[next_layout_idx]
+            break
+        end
+    end
+
+	if workspace.special then
+		hl.workspace_rule({ workspace = tostring(workspace.name), layout = next_layout })
+	else
+		hl.workspace_rule({ workspace = tostring(workspace.id), layout = next_layout })
+	end
+end)
 
 
 --Audio
@@ -40,11 +67,11 @@ hl.bind("F10" ,hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
 
 
 --Screenshots
-hl.bind("SUPER + SHIFT + S" ,hl.dsp.exec_cmd("hyprshot -m output"))
+hl.bind("SUPER + SHIFT + S" ,hl.dsp.exec_cmd("Hyprshot/hyprshot -m output"))
 
-hl.bind("SUPER + PRINT" ,hl.dsp.exec_cmd("hyprshot -m window"))
+hl.bind("SUPER + PRINT" ,hl.dsp.exec_cmd("Hyprshot/hyprshot -m window"))
 
-hl.bind("SUPER + S" ,hl.dsp.exec_cmd("hyprshot -m region"))
+hl.bind("SUPER + S" ,hl.dsp.exec_cmd("Hyprshot/hyprshot -m region"))
 
 
 
