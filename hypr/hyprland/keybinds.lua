@@ -104,5 +104,5 @@ hl.bind("F2", hl.dsp.exec_cmd("hyprctl reload"))
 
 hl.bind("F1", hl.dsp.exec_cmd("bash opacityZero.sh"))
 hl.bind("F1", hl.dsp.exec_cmd("bash exitPeek.sh"), {release = true})
-hl.bind("F2", hl.dsp.exec_cmd("eww close-all"), {release = true})
+hl.bind("F3", hl.dsp.exec_cmd("eww close-all"), {release = true})
 
