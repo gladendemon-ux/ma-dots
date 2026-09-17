@@ -1,0 +1,86 @@
+@import "colors.rasi"
+
+* {
+    background-color:   @primary;
+    text-color:         @surface;
+    accent-color:       @surface-bright;
+
+    margin:     0px;
+    padding:    0px;
+    spacing:    0px;
+}
+
+window {
+    background-color:   @background;
+    location:   center;
+    width:      480px;
+    border-color: @secondary;
+    border:     2px solid;
+}
+
+inputbar {
+    padding:    8px 12px;
+    spacing:    12px;
+    children:   [ prompt, entry ];
+}
+
+prompt, entry, element-text, element-icon {
+    vertical-align: 0.5;
+}
+
+prompt {
+    text-color: @surface-bright;
+}
+
+listview {
+    lines:      8;
+    columns:    1;
+
+    fixed-height:   false;
+}
+
+element {
+    padding:    8px;
+    spacing:    8px;
+    background-color: @primary;
+}
+
+element normal {
+    text-color: @surface;
+}
+
+element alternate normal {
+    background-color: @surface-dim;
+}
+
+element normal active {
+    text-color: @surface-dim;
+}
+
+element alternate active {
+    text-color: @secondary-fixed;
+}
+
+element selected {
+    text-color: @secondary-fixed-dim;
+}
+
+element selected normal {
+    background-color:   @secondary-container;
+}
+
+element selected urgent {
+    background-color:   @secondary-container;
+}
+
+element selected active {
+    background-color:   @secondary;
+}
+
+element-icon {
+    size:   1.5em;
+}
+
+element-text {
+    text-color: @primary;
+}

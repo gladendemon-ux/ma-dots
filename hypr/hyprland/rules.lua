@@ -1,5 +1,6 @@
 --Widow rules
 hl.window_rule({ match = { class = "Spotify" }, workspace = "10" })
+hl.window_rule({ match = { class = "Minecraft" }, workspace = "10" })
 
 
 --Layer rules

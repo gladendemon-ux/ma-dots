@@ -1,7 +1,9 @@
+@import "colors.css";
+
 * {
 	background-image: none;
 	box-shadow: none;
-	text-decoration-color: #FFFFFF;
+	text-decoration-color: @surface;
 }
 
 window {
@@ -11,8 +13,8 @@ window {
 button {
     border-radius: 30;
     border-color: black;
-    color: #81A1C1;
-    background-color: #4C566A;
+    color: @surface;
+    background-color: @surface_bright;
     border-style: solid;
     border-width: 1px;
     background-repeat: no-repeat;
@@ -23,12 +25,12 @@ button {
 }
 
 button:focus {
-	background-color: #8FBCBB;
+	background-color: @background;
 	outline-style: none;
 }
 
 button:active {
-	background-color: #88C0D0
+	background-color: @background;
 }
 
 

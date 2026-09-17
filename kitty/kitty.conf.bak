@@ -1,20 +1,16 @@
 # Theming
 include ./matugen-kitty.conf
 # Font
-font_family      Iosevka Mono Nerd Font
+font_family      JetBrains Mono Nerd Font
 font_size 11.0
 
 # Cursor
 cursor_trail 1
 cursor_blink_interval 0
 
-#remote
-allow_remote_control yes
-
-
 #zsh
 shell zsh
-map ctrl + r source ~/.zshrc
+
 # No stupid close confirmation
 confirm_os_window_close 0
 
@@ -37,19 +33,26 @@ map ctrl+kp_subtract       change_font_size all -1
 map ctrl+0 change_font_size all 0
 map ctrl+kp_0 change_font_size all 0
 
+# opacity
+dynamic_background_opacity no
+background_opacity 0.8
+
 # Tab bar
-# active_tab_foreground #8fbcbb
-# active_tab_background #434c5e
+
+active_tab_foreground #8fbcbb
+active_tab_background #434c5e
 active_tab_font_style   bold
-# inactive_tab_foreground #ebcb8b
-# inactive_tab_background #81a1c1
+inactive_tab_foreground #ebcb8b
+inactive_tab_background #81a1c1
 tab_title_template "{tab.active_wd} | {index} : {title}"
 
 tab_switch_strategy right
-tab_bar_min_tabs 1 
+tab_bar_min_tabs 1
 tab_bar_edge bottom
+tab_bar_margin_height 5.0 0.0
 tab_bar_style powerline
 tab_powerline_style round
+tab_bar_background #d08770
 
 
 map alt+1 goto_tab 1
@@ -62,11 +65,8 @@ map alt+7 goto_tab 7
 map alt+8 goto_tab 8
 map alt+9 goto_tab 9
 
+map ctrl+t new_tab
+map ctrl+w close_tab
+
 map ctrl+shift+page_up move_tab_backward
 map ctrl+shift+page_down move_tab_forward
-
-
-# BEGIN_KITTY_THEME
-# Matugen
-include current-theme.conf
-# END_KITTY_THEME

@@ -1,3 +1,4 @@
+
 -- MONITOR CONFIG
 hl.monitor({
     output = "",
@@ -47,17 +48,18 @@ hl.config({
     },
     general = {
         -- Gaps and border
-        gaps_in = 3,
-        gaps_out = 5,
+        gaps_in = 5,
+        gaps_out = 0,
         gaps_workspaces = 50,
 
         border_size = 2,
 
         col = {
-            active_border = "#D08780",
+            active_border = surface,
+            inactive_border = on_primary,
         },
         resize_on_border = false,
-
+        layout = "dwindle",
         no_focus_fallback = true,
         allow_tearing = true, -- This just allows the `immediate` window rule to work
         snap = {
@@ -71,7 +73,7 @@ hl.config({
         -- 2 = circle, higher = squircle, 4 = very obvious squircle
         -- Fuck clearly visible squircles. 100% Apple brainrot.
         rounding_power = 2.5,
-        rounding = 5,
+        rounding = 1,
 
         blur = {
             enabled = true,
@@ -107,7 +109,7 @@ hl.config({
         enabled = true
     },
     scrolling = {
-	column_width = 1.0
+	column_width = 0.95, 
     },
     dwindle = {
         preserve_split = true,
@@ -173,7 +175,7 @@ hl.animation({
     enabled = true,
     speed = 2,
     bezier = "emphasizedDecel",
-    style = "slide 90%"
+    style = "popin"
 })
 hl.animation({
     leaf = "fadeOut",
@@ -208,20 +210,7 @@ hl.animation({
     enabled = true,
     speed = 2.4,
     bezier = "menu_accel",
-    style = "popin"
-})
--- fade
-hl.animation({
-    leaf = "fadeLayersIn",
-    enabled = true,
-    speed = 0.5,
-    bezier = "menu_decel"
-})
-hl.animation({
-    leaf = "fadeLayersOut",
-    enabled = true,
-    speed = 2.7,
-    bezier = "stall"
+    style = "fade"
 })
 -- workspaces
 hl.animation({
@@ -258,14 +247,12 @@ hl.config({
     input = {
         kb_layout = "us, bg",
 	kb_variant = ",phonetic",
-	kb_options = "grp:alt_shift_toggle",
+	kb_options = "grp:alt_shift_toggle, ctrl:nocaps",
         numlock_by_default = true,
         repeat_delay = 250,
         repeat_rate = 35,
-
         follow_mouse = 1,
         off_window_axis_events = 2,
-
         touchpad = {
             natural_scroll = true,
             disable_while_typing = true,
@@ -276,7 +263,7 @@ hl.config({
 
     misc = {
         disable_hyprland_logo = true,
-        disable_splash_rendering = true,
+        disable_splash_rendering = false,
         vrr = 0,
         mouse_move_enables_dpms = true,
         key_press_enables_dpms = true,

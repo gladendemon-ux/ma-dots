@@ -1,0 +1,41 @@
+@import "colors.rasi"
+
+window {
+background-color: @background;
+text-color: @surface;
+}
+
+listview {
+lines: 1;
+columns: 3;
+fixed-height: false;
+spacing: 5px;
+}
+
+element {
+padding: 10px;
+background-color: @surface-bright;
+}
+
+element alternate normal {
+background-color: @surface-bright;
+}
+
+element selected {
+background-color: @foreground;
+}
+
+element-icon {
+squared: true;
+size: 30%;
+location: center;
+}
+
+
+//element-text {
+//width: 3px;
+//}
+//
+//element selected {
+//width: 3px;
+//}

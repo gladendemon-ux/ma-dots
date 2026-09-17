@@ -1,0 +1,42 @@
+[config]
+caching = false
+
+[templates.kitty]
+input_path = '~/.config/matugen/templates/kitty-colors.conf'
+output_path = '~/.config/kitty/themes/Matugen.conf'
+post_hook = 'kitty +kitten themes --reload-in=all Matugen'
+
+
+[templates.rofi]
+input_path = '~/.config/matugen/templates/rofi-colors.rasi'
+output_path = '~/.config/rofi/colors.rasi'
+
+
+[templates.gtk4]
+input_path = '~/.config/matugen/templates/gtk-colors.css'
+output_path = '~/.config/gtk-4.0/gtk.css'
+
+
+[templates.hyprland]
+input_path = '~/.config/matugen/templates/hyprland-colors.lua'
+output_path = '~/.config/hypr/hyprland/colors.lua'
+
+
+[templates.eww]
+input_path = "~/.config/matugen/templates/eww.scss"
+output_path = "~/.config/eww/colors.scss"
+
+[templates.wlogout]
+input_path = '~/.config/matugen/templates/wlogout.css'
+output_path = '~/.config/wlogout/colors.css'
+
+[templates.prismlauncher]
+input_path = '~/.config/matugen/templates/prismlauncher.json'
+output_path = '~/.var/app/org.prismlauncher.PrismLauncher/data/PrismLauncher/themes/Matugen/theme.json'
+
+
+
+[templates.swaync]
+input_path = "~/.config/matugen/templates/colors.css"
+output_path = "~/.config/swaync/colors.css"
+post_hook = "swaync-client -rs"
