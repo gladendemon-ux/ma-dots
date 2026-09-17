@@ -15,14 +15,14 @@ hl.bind("SUPER + E" ,hl.dsp.exec_cmd(file))
 hl.bind("SUPER + D" ,hl.dsp.exec_cmd("flatpak run org.blender.Blender"))
 hl.bind("SUPER + T" ,hl.dsp.exec_cmd(sway))
 hl.bind("SUPER + P" ,hl.dsp.exec_cmd("hyprpicker"))
-hl.bind("SUPER + X" ,hl.dsp.exec_cmd("wlogout -b 2"))
+hl.bind("SUPER + X" ,hl.dsp.exec_cmd("bash powermenu.sh"))
 hl.bind("SUPER + SHIFT + W" ,hl.dsp.exec_cmd("bash wall.sh"))
 hl.bind("SUPER + D" ,hl.dsp.exec_cmd("kitty sh -c 'yazi ~/wallpapers/'"))
 
 
 
-hl.bind("SUPER + L" ,hl.dsp.exec_cmd("hyprlock"))
 
+hl.bind("SUPER + O" ,hl.dsp.exec_cmd("hyprlock"))
 
 
 --Playerctl
@@ -33,7 +33,7 @@ hl.bind("F9", hl.dsp.exec_cmd("playerctl --player=spotify next"),       { locked
 
 --cycle layouts
 hl.bind("SUPER + tab", function ()
-    local layouts     = { "scrolling", "dwindle", "master" }
+    local layouts     = { "scrolling", "dwindle" }
     local workspace   = hl.get_active_workspace()
 	if hl.get_active_special_workspace() then
 		workspace = hl.get_active_special_workspace()
@@ -78,17 +78,17 @@ hl.bind("SUPER + S" ,hl.dsp.exec_cmd("Hyprshot/hyprshot -m region"))
 
 
 --Focus
-hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
+hl.bind(mainMod .. " + h",  hl.dsp.focus({ direction = "left" }))
+hl.bind(mainMod .. " + l", hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. " + k",    hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + j",  hl.dsp.focus({ direction = "down" }))
 
 
 --Moving windows with keybinds
-hl.bind(mainMod .. "+ SHIFT + left",  hl.dsp.window.move({ direction = "left" }))
-hl.bind(mainMod .. "+ SHIFT + right", hl.dsp.window.move({ direction = "right" }))
-hl.bind(mainMod .. "+ SHIFT + up",    hl.dsp.window.move({ direction = "up" }))
-hl.bind(mainMod .. "+ SHIFT + down",  hl.dsp.window.move({ direction = "down" }))
+hl.bind(mainMod .. "+ SHIFT + h",  hl.dsp.window.move({ direction = "left" }))
+hl.bind(mainMod .. "+ SHIFT + l", hl.dsp.window.move({ direction = "right" }))
+hl.bind(mainMod .. "+ SHIFT + k",    hl.dsp.window.move({ direction = "up" }))
+hl.bind(mainMod .. "+ SHIFT + l",  hl.dsp.window.move({ direction = "down" }))
 
 
 
@@ -108,10 +108,9 @@ end
 
 hl.bind("SUPER + P", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind("SUPER + N" ,hl.dsp.focus({ workspace = "e+1" }))
-hl.bind("F3", hl.dsp.exec_cmd("hyprctl reload"))
 
 
-hl.bind("F1", hl.dsp.exec_cmd("eww open-many --toggle clock music-widget ram"))
---hl.bind("F1", hl.dsp.exec_cmd("eww close-all"), {release = true})
---hl.bind("F3", hl.dsp.exec_cmd("eww kill"))
+hl.bind("F1", hl.dsp.exec_cmd("eww open-many clock music-widget ram"))
+hl.bind("F1", hl.dsp.exec_cmd("eww close-all"), {release = true})
+hl.bind("F3", hl.dsp.exec_cmd("eww kill"))
 

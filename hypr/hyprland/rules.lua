@@ -8,7 +8,8 @@ hl.window_rule({ match = { class = "Minecraft" }, workspace = "10" })
 
 hl.layer_rule({ match = { namespace = "hyprpicker" }, no_anim = true })
 hl.layer_rule({ match = { namespace = "hyprshot" }, no_anim = true })
-hl.layer_rule({ match = { namespace = "wlogout" }, no_anim = true})
+hl.layer_rule({ match = { namespace = "wlogout" }, blur = true})
+
 
 --Workspace rules
 
