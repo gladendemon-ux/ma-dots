@@ -2,9 +2,15 @@
 
 WALLPAPER_DIR="$HOME/wallpapers"
 
+
+dir=$(ls -1 ~/wallpapers/ | rofi -dmenu -config ~/.config/rofi/rofi.rasi -p "" -matching=fuzzy)
+
+
+WALLPAPER_DIR="$HOME/wallpapers/$dir"
+
 mapfile -t wallpapers < <(
-    find "$WALLPAPER_DIR" -type f \
-        \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) |
+    find ~/wallpapers/$dir -type f \
+        \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.gif' -o -iname '*.webp' \) |
         sort
 )
 
