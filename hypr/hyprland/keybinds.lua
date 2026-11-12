@@ -1,11 +1,15 @@
 local mainMod = "SUPER"
-local file = "kitty yazi"
+local file = "nautilus"
 local browser = "firefox"
-local menu = "rofi -config ~/.config/rofi/rofi.rasi -show drun -show-icons"
+local menu = "rofi -show drun -config ~/.config/rofi/rofi.rasi"
+local runner = "walker"
 local terminal = "kitty"
 local sway = "swaync-client -t"
 
+
+
 hl.bind("SUPER + Super_L", hl.dsp.exec_cmd(menu))
+hl.bind("SUPER + SPACE", hl.dsp.exec_cmd(runner))
 hl.bind("SUPER + B" ,hl.dsp.exec_cmd(browser))
 hl.bind("SUPER + Q" ,hl.dsp.exec_cmd(terminal))
 hl.bind("SUPER + W" ,hl.dsp.window.close())
@@ -14,21 +18,44 @@ hl.bind("SUPER + F" ,hl.dsp.window.float({ action = "toggle" }))
 hl.bind("SUPER + E" ,hl.dsp.exec_cmd(file))
 hl.bind("SUPER + D" ,hl.dsp.exec_cmd("flatpak run org.blender.Blender"))
 hl.bind("SUPER + T" ,hl.dsp.exec_cmd(sway))
-hl.bind("SUPER + P" ,hl.dsp.exec_cmd("hyprpicker"))
-hl.bind("SUPER + X" ,hl.dsp.exec_cmd("bash powermenu.sh"))
-hl.bind("SUPER + SHIFT + W" ,hl.dsp.exec_cmd("bash wall.sh"))
-hl.bind("SUPER + D" ,hl.dsp.exec_cmd("kitty sh -c 'yazi ~/wallpapers/'"))
+hl.bind("SUPER + X" ,hl.dsp.exec_cmd("bash ~/rofis/powermenu.sh"))
+hl.bind("SUPER + SHIFT + W" ,hl.dsp.exec_cmd("bash ~/rofis/wall.sh"))
+hl.bind("SUPER + D", hl.dsp.window.pseudo())
 
 
 
+hl.bind("Alt_R + Delete" ,hl.dsp.exec_cmd("hyprlock"))
 
-hl.bind("SUPER + O" ,hl.dsp.exec_cmd("hyprlock"))
+
+--Audio
+
+hl.bind("XF86AudioRaiseVolume" ,hl.dsp.exec_cmd("swayosd-client --output-volume 2"))
+hl.bind("XF86AudioLowerVolume" ,hl.dsp.exec_cmd("swayosd-client --output-volume -2"))
+hl.bind("SUPER + equal" ,hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 5%+ && swayosd-client --custom-message 'vol: +'"))
+hl.bind("XF86AudioMute" ,hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"))
 
 
---Playerctl
-hl.bind("F8", hl.dsp.exec_cmd("playerctl --player=spotify play-pause"), { locked = true })
-hl.bind("F7", hl.dsp.exec_cmd("playerctl --player=spotify previous"),   { locked = true })
-hl.bind("F9", hl.dsp.exec_cmd("playerctl --player=spotify next"),       { locked = true })
+--Spotify controls
+
+hl.bind("SUPER + XF86AudioMute", hl.dsp.exec_cmd("playerctl --player=spotify play-pause"), { locked = true })
+hl.bind("SUPER + XF86AudioLowerVolume", hl.dsp.exec_cmd("playerctl volume 0.05- --player=spotify"),   { locked = true })
+hl.bind("SUPER + XF86AudioRaiseVolume", hl.dsp.exec_cmd("playerctl volume 0.05+ --player=spotify"),       { locked = true })
+hl.bind("SUPER + S", hl.dsp.exec_cmd("playerctl position 0.0 --player=spotify"),       { locked = true })
+
+
+hl.bind("SUPER + grave + XF86AudioLowerVolume", hl.dsp.exec_cmd("playerctl position 10-"),   { locked = true })
+hl.bind("SUPER + grave + XF86AudioRaiseVolume", hl.dsp.exec_cmd("playerctl position 10+"),       { locked = true })
+
+
+hl.bind("SUPER + i", hl.dsp.exec_cmd("swayosd-client --playerctl play-pause --player=spotify"), { locked = true })
+hl.bind("SUPER + u", hl.dsp.exec_cmd("swayosd-client --playerctl prev --player=spotify"),   { locked = true })
+hl.bind("SUPER + o", hl.dsp.exec_cmd("swayosd-client --playerctl next --player=spotify"),       { locked = true })
+hl.bind("SUPER + y", hl.dsp.exec_cmd("swayosd-client --playerctl play-pause --player=firefox"), { locked = true })
+
+hl.bind("SUPER + S + p", hl.dsp.exec_cmd("playerctl --player=spotify loop Playlist"))
+hl.bind("SUPER + S + t", hl.dsp.exec_cmd("playerctl --player=spotify loop track"))
+hl.bind("SUPER + S + n", hl.dsp.exec_cmd("playerctl --player=spotify loop none"))
+
 
 
 --cycle layouts
@@ -53,20 +80,11 @@ hl.bind("SUPER + tab", function ()
         end
     end
 
-	if workspace.special then
-		hl.workspace_rule({ workspace = tostring(workspace.name), layout = next_layout })
-	else
-		hl.workspace_rule({ workspace = tostring(workspace.id), layout = next_layout })
+	if workspace.special then hl.workspace_rule({ workspace = tostring(workspace.name), layout = next_layout }) else hl.workspace_rule({ workspace = tostring(workspace.id), layout = next_layout })
 	end
 end)
 
 
---Audio
-hl.bind("SUPER + F12" ,hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 2%+"))
-hl.bind("SUPER + F11" ,hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_SINK@ 2%-"))
-
-
-hl.bind("F10" ,hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
 
 
 --Screenshots
@@ -74,7 +92,8 @@ hl.bind("PRINT" ,hl.dsp.exec_cmd("Hyprshot/hyprshot -m output"))
 
 hl.bind("SUPER + PRINT" ,hl.dsp.exec_cmd("Hyprshot/hyprshot -m window"))
 
-hl.bind("SUPER + S" ,hl.dsp.exec_cmd("Hyprshot/hyprshot -m region"))
+hl.bind("SUPER + SHIFT + S" ,hl.dsp.exec_cmd("Hyprshot/hyprshot -m output"))
+hl.bind("SUPER + CTRL + S" ,hl.dsp.exec_cmd("Hyprshot/hyprshot -m region"))
 
 
 --Focus
@@ -88,7 +107,7 @@ hl.bind(mainMod .. " + j",  hl.dsp.focus({ direction = "down" }))
 hl.bind(mainMod .. "+ SHIFT + h",  hl.dsp.window.move({ direction = "left" }))
 hl.bind(mainMod .. "+ SHIFT + l", hl.dsp.window.move({ direction = "right" }))
 hl.bind(mainMod .. "+ SHIFT + k",    hl.dsp.window.move({ direction = "up" }))
-hl.bind(mainMod .. "+ SHIFT + l",  hl.dsp.window.move({ direction = "down" }))
+hl.bind(mainMod .. "+ SHIFT + j",  hl.dsp.window.move({ direction = "down" }))
 
 
 
@@ -108,9 +127,16 @@ end
 
 hl.bind("SUPER + P", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind("SUPER + N" ,hl.dsp.focus({ workspace = "e+1" }))
+hl.bind("SUPER + Escape" ,hl.dsp.focus({ workspace = "e+1" }))
 
 
-hl.bind("F1", hl.dsp.exec_cmd("eww open-many clock music-widget ram"))
+hl.bind("F1", hl.dsp.exec_cmd("eww open-many clock music-widget ram ws-indicator"))
 hl.bind("F1", hl.dsp.exec_cmd("eww close-all"), {release = true})
-hl.bind("F3", hl.dsp.exec_cmd("eww kill"))
+hl.bind("F7", hl.dsp.exec_cmd("kill -9 $(pidof eww)"))
+
+--Discord global shortcuts
+hl.bind("SUPER + CTRL + D", hl.dsp.send_shortcut({ mods = "CTRL SHIFT", key = "D", window = "class:discord" }))
+hl.bind("SUPER + CTRL + M", hl.dsp.send_shortcut({ mods = "CTRL SHIFT", key = "M", window = "class:discord" }))
+
+
 

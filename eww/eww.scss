@@ -4,7 +4,6 @@ $main-color: $primary;
 $secondary-color: $secondary;
 $text-color: $foreground;
 $text-sec-color: $background;
-//$author-font
 
 
 
@@ -72,18 +71,18 @@ window {
 .ram-progress {
   color: $primary;
 
-  background-color: $text-color;
+  background-color: $primary_container;
 
   min-width: 82px;
   min-height: 82px;
-
+  margin: 10px;
 }
 
 .ram-content {
   min-width: 82px;
   min-height: 82px;
 
-  color: $text-color;
+  color: $background;
 
 }
 
@@ -100,4 +99,29 @@ window {
   font-weight: 700;
 
   color: $primary;
+}
+
+
+
+.workspace-entry {
+
+  margin: 10px;
+  font-size: 14px;
+	&.empty {
+          color: rgba(0, 0, 0, 0)
+	}
+
+	&.occupied {
+          color: $primary;
+	}
+
+	&.current {
+          color: $foreground;
+          font-size: 40px;
+	}
+
+	&.urgent {
+          color: $primary_container;
+	}
+
 }

@@ -13,7 +13,11 @@
 (defpoll ram_usage :interval "2s" `free | awk '/Mem:/ {printf "%.0f", ($3/$2)*100}'`)
 
 (defpoll cover   :interval "1s"
-"bash ~/getsongcover.sh")
+"bash ~/eww-scripts/getsongcover.sh")
+
+(defpoll lyrics   :interval "200ms"
+"bash ~/eww-scripts/lyrics.sh")
+
 
 
 (defpoll time :interval "1s" "date +%H:%M")
@@ -50,6 +54,30 @@
       )))
 
 
+
+(deflisten workspaces :initial "[]" "bash ~/eww-scripts/get-workspaces.sh")
+(deflisten current_workspace :initial "..." "bash ~/eww-scripts/get-active-workspace.sh")
+(deflisten urgent_workspace :initial "..." "bash ~/eww-scripts/get-urgent-workspaces.sh")
+(defwidget _workspaces []
+  (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
+    (box :space-evenly false :halign "center"
+      (label :text "${workspaces}${current_workspace}${urgent_workspace}" :visible false)
+      (for workspace in workspaces
+        (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+          (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.id == urgent_workspace ? "urgent" : ""} ${workspace.windows > 0 ? "occupied" : "empty" }"
+            (label :text "${workspace.id}")
+          )
+        )
+      )
+    )
+  )
+)
+
+
+(defwidget music-lyrics []
+(label :text lyrics :class "song-lyrics"
+))
+
 (defwidget ram_widget [] (circular-progress :value ram_usage :start-at 75 :thickness 8 :class "ram-progress" (box :class "ram-content" :orientation "v" :space-evenly false (label :class "ram-icon" :text "RAM usage") (label :class "ram-percent" :text "${ram_usage}%"))))
 
 
@@ -67,13 +95,16 @@
   (music-widget)
 )
 
-;;
-;;(defwindow ram
-;;  :monitor 0
-;;  :geometry (geometry :y "80%":x "60%" :width "20%" :height "10%" ) 
-;;  :stacking "overlay"
-;;  (ram-widget))
-;;
+
+(defwindow music-progress
+  :monitor 0
+  :geometry (geometry :x "20%" :y "20%" :width "20%" :height "5%" )
+  :stacking "overlay"
+  :exclusive false
+  (music-position)
+)
+
+
 
 (defwindow clock
   :namespace "eww-blur"
@@ -85,5 +116,24 @@
   (clock))
 
 (defwindow ram :monitor 0 :geometry (geometry :width "15%" :height "15%" :x "60%" :y "80%") :stacking "overlay" :windowtype "normal" :wm-ignore false (ram_widget))
+
+
+
+(defwindow ws-indicator
+  :monitor 0
+  :geometry (geometry :y "74.5%":x "60%" :width "15%" :height "5%" ) 
+  :stacking "overlay"
+  (_workspaces))
+
+
+
+
+(defwindow music-lyrics
+  :monitor 0
+  :geometry (geometry :width "20%" :height "10%" :x "60%" :y "80")
+  :stacking "overlay"
+  :visible true
+  :exclusive false  
+  (music-lyrics))
 
 

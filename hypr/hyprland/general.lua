@@ -22,20 +22,7 @@ hl.gesture({
     direction = "horizontal",
     action = "workspace"
 })
-hl.gesture({
-    fingers = 4,
-    direction = "up",
-    action = function()
-        hl.dispatch(hl.dsp.global("quickshell:overviewWorkspacesToggle"))
-    end
-})
-hl.gesture({
-    fingers = 4,
-    direction = "down",
-    action = function()
-        hl.dispatch(hl.dsp.global("quickshell:overviewWorkspacesToggle"))
-    end
-})
+
 
 hl.config({
     gestures = {
@@ -48,9 +35,9 @@ hl.config({
     },
     general = {
         -- Gaps and border
-        gaps_in = 5,
-        gaps_out = 0,
-        gaps_workspaces = 50,
+        gaps_in = 10,
+        gaps_out = 10,
+        gaps_workspaces = 0,
 
         border_size = 2,
 
@@ -61,7 +48,6 @@ hl.config({
         resize_on_border = false,
         layout = "dwindle",
         no_focus_fallback = true,
-        allow_tearing = true, -- This just allows the `immediate` window rule to work
         snap = {
             enabled = true,
             window_gap = 4,
@@ -70,10 +56,11 @@ hl.config({
         }
     },
     decoration = {
-        -- 2 = circle, higher = squircle, 4 = very obvious squircle
-        -- Fuck clearly visible squircles. 100% Apple brainrot.
-        rounding_power = 2.5,
-        rounding = 1,
+        
+
+	rounding_power = 2.5,
+
+        rounding = 0,
 
         blur = {
             enabled = true,
@@ -82,22 +69,22 @@ hl.config({
             new_optimizations = true,
             size = 10,
             passes = 3,
-            brightness = 0.7,
+            brightness = 1,
             noise = 0.005,
             contrast = 1,
-            vibrancy = 0,
+            vibrancy = 1,
             vibrancy_darkness = 0,
             popups = true,
             popups_ignorealpha = 0.6,
             input_methods = true,
-            input_methods_ignorealpha = 0.8
+            input_methods_ignorealpha = 0.85,
         },
         shadow = {
             enabled = true,
-            range = 20,
+            range = 40,
             offset = {0, 2},
-            render_power = 10,
-            color = "rgba(00000020)"
+            render_power = 20,
+            color = "rgba(0, 0, 0, 0.2)"
 
         },
         -- Dim
@@ -247,7 +234,7 @@ hl.config({
     input = {
         kb_layout = "us, bg",
 	kb_variant = ",phonetic",
-	kb_options = "grp:alt_shift_toggle, ctrl:nocaps",
+	kb_options = "grp:alt_shift_toggle, altwin:swap_lalt_lwin",
         numlock_by_default = true,
         repeat_delay = 250,
         repeat_rate = 35,
